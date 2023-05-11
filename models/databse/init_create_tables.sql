@@ -17,3 +17,4 @@ CREATE TABLE articles
     created_at  TIMESTAMP,
     updated_at  TIMESTAMP
 );
+-- TODO add other tables like comments and category
