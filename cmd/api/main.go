@@ -1,11 +1,24 @@
 package main
 
-import "backend/initializer"
+import (
+	"backend/controllers"
+	"backend/initializer"
+	"net/http"
+)
 
 func init() {
 	initializer.ConnectToDb()
 }
 
-func main() {
+const port = ":8080"
 
+func main() {
+	server := http.Server{
+		Addr:    port,
+		Handler: controllers.Routes(),
+	}
+	err := server.ListenAndServe()
+	if err != nil {
+		panic(err)
+	}
 }
