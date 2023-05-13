@@ -1,7 +1,6 @@
 package main
 
 import (
-	"backend/controllers"
 	"backend/initializer"
 	"net/http"
 )
@@ -15,7 +14,7 @@ const port = ":8080"
 func main() {
 	server := http.Server{
 		Addr:    port,
-		Handler: controllers.Routes(),
+		Handler: Routes(),
 	}
 	err := server.ListenAndServe()
 	if err != nil {

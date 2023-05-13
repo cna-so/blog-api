@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"backend/controllers/authorization"
 	"backend/helpers"
 	"backend/helpers/hash"
 	"backend/models"
@@ -39,7 +40,17 @@ func GetUser(ctx *gin.Context) {
 		})
 		return
 	}
+	token, err := authorization.GenerateJwtToken(usr.Email)
+	if err != nil {
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+	}
 	ctx.JSON(http.StatusAccepted, gin.H{
-		"email": usr.Email,
+		"email":        usr.Email,
+		"access_token": token,
 	})
 }
