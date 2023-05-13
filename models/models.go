@@ -2,7 +2,7 @@ package models
 
 import (
 	"backend/initializer"
-	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -15,7 +15,6 @@ type User struct {
 }
 
 func (u *User) CreateUser() (statusCode int, err error) {
-	fmt.Println("in db")
 	row := initializer.Db.QueryRow(` INSERT INTO users
     (email , password , first_name,last_name)
 	VALUES
@@ -27,4 +26,19 @@ func (u *User) CreateUser() (statusCode int, err error) {
 	}
 
 	return http.StatusCreated, nil
+}
+
+func (u *User) GetUser() (usr User, err error) {
+	user := User{}
+	row := initializer.Db.QueryRow("SELECT password , email FROM users WHERE email=$1", u.Email)
+	if row.Err() != nil {
+		return User{}, row.Err()
+	}
+
+	err = row.Scan(&user.Password, &user.Email)
+	log.Println(err)
+	if err != nil {
+		return User{}, err
+	}
+	return user, nil
 }

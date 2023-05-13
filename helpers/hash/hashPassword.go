@@ -1,6 +1,8 @@
 package HashPassword
 
-import "golang.org/x/crypto/bcrypt"
+import (
+	"golang.org/x/crypto/bcrypt"
+)
 
 // HashPassword create a hash password from raw password
 func HashPassword(pass string) (string, error) {
@@ -12,10 +14,10 @@ func HashPassword(pass string) (string, error) {
 }
 
 // ComparePassWithHash  check the password is right or not
-func ComparePassWithHash(pass, hashPass string) bool {
+func ComparePassWithHash(hashPass, pass string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hashPass), []byte(pass))
 	if err != nil {
-		return false
+		return true
 	}
-	return true
+	return false
 }

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"backend/helpers"
+	HashPassword "backend/helpers/hash"
 	"backend/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -23,7 +24,15 @@ func CreateUser(ctx *gin.Context) {
 		})
 		return
 	}
+
+	user.Password, err = HashPassword.HashPassword(user.Password)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": "failed to create hash password",
+		})
+	}
 	statusCode, err := user.CreateUser()
+
 	if err != nil {
 		ctx.JSON(statusCode, gin.H{
 			"error": err.Error(),

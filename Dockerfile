@@ -24,4 +24,4 @@ COPY --from=build /app/main .
 
 CMD ["./main"]
 
-EXPOSE 8080
+EXPOSE 8000

@@ -17,6 +17,7 @@ func Routes() *gin.Engine {
 
 	user := router.Group("/api/v1/user")
 	user.POST("/create", controllers.CreateUser)
+	user.POST("/login", controllers.GetUser)
 
 	return router
 }
