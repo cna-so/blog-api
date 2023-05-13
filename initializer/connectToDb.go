@@ -3,7 +3,7 @@ package initializer
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/jackc/pgx/v5"
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"log"
 )
 
