@@ -2,7 +2,7 @@ package models
 
 import (
 	"backend/initializer"
-	"errors"
+	"fmt"
 	"net/http"
 )
 
@@ -15,14 +15,15 @@ type User struct {
 }
 
 func (u *User) CreateUser() (statusCode int, err error) {
-	if len(u.Email) < 5 || len(u.Password) < 8 {
-		return http.StatusNoContent, errors.New("the (email , password) are require")
-	}
-
-	row := initializer.Db.QueryRow("INSERT INTO users (email , password , first_name,last_name) VALUES ($1,$2,$3,$4)", u.Email, u.Password, u.FirstName, u.LastName)
+	fmt.Println("in db")
+	row := initializer.Db.QueryRow(` INSERT INTO users
+    (email , password , first_name,last_name)
+	VALUES
+	($1,$2,$3,$4)`,
+		u.Email, u.Password, u.FirstName, u.LastName)
 
 	if row.Err() != nil {
-		return http.StatusInternalServerError, err
+		return http.StatusInternalServerError, row.Err()
 	}
 
 	return http.StatusCreated, nil
