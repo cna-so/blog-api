@@ -1,10 +1,12 @@
 package main
 
 import (
+	ar "backend/controllers/article"
 	"backend/controllers/authorization"
 	controllers "backend/controllers/user"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Routes() *gin.Engine {
@@ -25,5 +27,7 @@ func Routes() *gin.Engine {
 		context.JSON(http.StatusOK, "your token is valid")
 	})
 
+	articles := router.Group("/api/v1/articles")
+	articles.GET("/all", ar.GetArticles)
 	return router
 }
