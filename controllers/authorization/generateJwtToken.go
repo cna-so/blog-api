@@ -6,12 +6,13 @@ import (
 	"time"
 )
 
-func GenerateJwtToken(email string) (string, error) {
+func GenerateJwtToken(email, role string) (string, error) {
 	// Create a new token object, specifying signing method and the claims
 	// you would like it to contain.
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": email,
-		"exp": time.Now().Add(time.Hour * 24 * 7).Unix(),
+		"sub":  email,
+		"role": role,
+		"exp":  time.Now().Add(time.Hour * 24 * 7).Unix(),
 	})
 
 	// Sign and get the complete encoded token as a string using the secret

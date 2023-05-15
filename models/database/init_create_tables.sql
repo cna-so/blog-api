@@ -5,6 +5,7 @@ CREATE TABLE users
     first_name VARCHAR(50),
     last_name  VARCHAR(80),
     password   VARCHAR(100) NOT NULL,
+    role VARCHAR(5) NOT NULL ,
     created_at TIMESTAMP,
     updated_at TIMESTAMP
 );
@@ -13,7 +14,7 @@ CREATE TABLE category
     id         SERIAL PRIMARY KEY,
     title      VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL ,
-    updated_at TIMESTAMP NOT NULL 
+    updated_at TIMESTAMP NOT NULL
 
 );
 CREATE TABLE articles

@@ -37,12 +37,12 @@ func (ar *Article) GetArticles() ([]Article, error) {
 }
 
 func (ar *Article) GetArticleWithId() (Article, error) {
-	row := initializer.Db.QueryRow("SELECT * FROM articles WHERE id=$1", ar.ID)
+	row := initializer.Db.QueryRow("SELECT id, title, description, creator, category_id, created_at, updated_at FROM articles WHERE id=$1", ar.ID)
 	if row.Err() != nil {
 		return Article{}, row.Err()
 	}
 	var article Article
-	err := row.Scan(&article.ID, &article.Title, &article.Description, &article.Creator, &article.CreateAt, &article.UpdatedAt)
+	err := row.Scan(&article.ID, &article.Title, &article.Description, &article.Creator, &article.CategoryID, &article.CreateAt, &article.UpdatedAt)
 	if err != nil {
 		return Article{}, err
 	}
