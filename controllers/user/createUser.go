@@ -4,8 +4,9 @@ import (
 	"backend/helpers"
 	HashPassword "backend/helpers/hash"
 	"backend/models"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func CreateUser(ctx *gin.Context) {
