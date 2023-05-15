@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"backend/helpers"
 	HashPassword "backend/helpers/hash"
 	"backend/models"
 	"net/http"
@@ -11,17 +10,11 @@ import (
 
 func CreateUser(ctx *gin.Context) {
 	var user models.User
-	err := ctx.BindJSON(&user)
+	err := ctx.ShouldBindJSON(&user)
 	if err != nil {
-		ctx.JSON(http.StatusNoContent, gin.H{
-			"error": err,
-		})
-		return
-	}
-	user, err = helpers.ValidateUser(user)
-	if err != nil {
-		ctx.JSON(http.StatusForbidden, gin.H{
-			"error": err.Error(),
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error":   "validation error",
+			"message": "should enter (email , password ، first_name , last_name)",
 		})
 		return
 	}
