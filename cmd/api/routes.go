@@ -30,5 +30,6 @@ func Routes() *gin.Engine {
 	articles := router.Group("/api/v1/articles")
 	articles.GET("/all", ar.GetArticles)
 	articles.GET("/article/:id", ar.GetArticleWithId)
+	articles.DELETE("/article/:id", ar.DeleteArticle)
 	return router
 }
