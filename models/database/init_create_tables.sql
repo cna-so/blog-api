@@ -12,8 +12,8 @@ CREATE TABLE category
 (
     id         SERIAL PRIMARY KEY,
     title      VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
+    created_at TIMESTAMP NOT NULL ,
+    updated_at TIMESTAMP NOT NULL 
 
 );
 CREATE TABLE articles
@@ -23,7 +23,7 @@ CREATE TABLE articles
     description   TEXT         NOT NULL,
     creator       INTEGER REFERENCES users (id),
     category_id   INTEGER REFERENCES category (id),
-    created_at    TIMESTAMP,
-    updated_at    TIMESTAMP
+    created_at    TIMESTAMP NOT NULL ,
+    updated_at    TIMESTAMP NOT NULL
 );
 -- TODO add other tables like comments

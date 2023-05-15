@@ -8,16 +8,17 @@ import (
 
 type Article struct {
 	ID          int       `json:"id,omitempty"`
-	Title       string    `json:"title"`
-	Description string    `json:"description"`
-	Creator     int       `json:"creator"`
-	CreateAt    time.Time `json:"create_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
+	Title       string    `json:"title" binding:"required"`
+	Description string    `json:"description" binding:"required"`
+	CategoryID  int       `json:"category_id" binding:"required"`
+	Creator     int       `json:"creator" binding:"required"`
+	CreateAt    time.Time `json:"create_at,omitempty"`
+	UpdatedAt   time.Time `json:"updated_at,omitempty"`
 }
 
 // GetArticles TODO : enable pagination
 func (ar *Article) GetArticles() ([]Article, error) {
-	rows, err := initializer.Db.Query("SELECT * FROM articles")
+	rows, err := initializer.Db.Query("SELECT id , title,description,creator,category_id , created_at FROM articles")
 	if err != nil {
 		return nil, err
 	}
@@ -25,7 +26,7 @@ func (ar *Article) GetArticles() ([]Article, error) {
 
 	for rows.Next() {
 		var article Article
-		err = rows.Scan(&article.ID, &article.Title, &article.Description, &article.Creator, &article.CreateAt, &article.UpdatedAt)
+		err = rows.Scan(&article.ID, &article.Title, &article.Description, &article.Creator, &article.CategoryID, &article.CreateAt)
 		if err != nil {
 			return nil, err
 		}
@@ -61,6 +62,19 @@ func (ar *Article) DeleteArticle() (string, error) {
 	err := row.Scan(&id)
 	if err != nil {
 		return "0", err
+	}
+	return id, nil
+}
+
+func (ar *Article) InsertArticle() (string, error) {
+	row := initializer.Db.QueryRow("INSERT INTO articles (title, description, creator, category_id) VALUES ($1,$2,$3,$4) RETURNING id")
+	if row.Err() != nil {
+		return "", row.Err()
+	}
+	var id string
+	err := row.Scan(&id)
+	if err != nil {
+		return "", err
 	}
 	return id, nil
 }
