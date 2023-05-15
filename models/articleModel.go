@@ -67,7 +67,11 @@ func (ar *Article) DeleteArticle() (string, error) {
 }
 
 func (ar *Article) InsertArticle() (string, error) {
-	row := initializer.Db.QueryRow("INSERT INTO articles (title, description, creator, category_id) VALUES ($1,$2,$3,$4) RETURNING id")
+	row := initializer.Db.QueryRow(`INSERT INTO articles 
+    (title, description, creator, category_id , created_at ,updated_at) 
+	VALUES ($1,$2,$3,$4,$5,$6) RETURNING id`,
+		ar.Title, ar.Description, ar.Creator, ar.CategoryID, time.Now(), time.Now(),
+	)
 	if row.Err() != nil {
 		return "", row.Err()
 	}
