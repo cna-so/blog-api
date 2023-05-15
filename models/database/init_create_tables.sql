@@ -8,13 +8,22 @@ CREATE TABLE users
     created_at TIMESTAMP,
     updated_at TIMESTAMP
 );
+CREATE TABLE category
+(
+    id         SERIAL PRIMARY KEY,
+    title      VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+
+);
 CREATE TABLE articles
 (
-    id          SERIAL PRIMARY KEY,
-    title       VARCHAR(200) NOT NULL,
-    description TEXT         NOT NULL,
-    creator     INTEGER REFERENCES users (id),
-    created_at  TIMESTAMP,
-    updated_at  TIMESTAMP
+    id            SERIAL PRIMARY KEY,
+    title         VARCHAR(200) NOT NULL,
+    description   TEXT         NOT NULL,
+    creator       INTEGER REFERENCES users (id),
+    category_id   INTEGER REFERENCES category (id),
+    created_at    TIMESTAMP,
+    updated_at    TIMESTAMP
 );
--- TODO add other tables like comments and category
+-- TODO add other tables like comments
