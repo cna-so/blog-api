@@ -22,6 +22,7 @@ func (ar *Article) GetArticles() ([]Article, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 	var articles []Article
 
 	for rows.Next() {
@@ -31,7 +32,6 @@ func (ar *Article) GetArticles() ([]Article, error) {
 			return nil, err
 		}
 		articles = append(articles, article)
-		defer rows.Close()
 	}
 	return articles, nil
 }
