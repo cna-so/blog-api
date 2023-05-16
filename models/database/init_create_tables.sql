@@ -9,7 +9,7 @@ CREATE TABLE users
     created_at TIMESTAMP,
     updated_at TIMESTAMP
 );
-CREATE TABLE category
+CREATE TABLE categories
 (
     id         SERIAL PRIMARY KEY,
     title      VARCHAR(255) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE articles
     title         VARCHAR(200) NOT NULL,
     description   TEXT         NOT NULL,
     creator       INTEGER REFERENCES users (id),
-    category_id   INTEGER REFERENCES category (id),
+    category_id   INTEGER REFERENCES categories (id),
     created_at    TIMESTAMP NOT NULL ,
     updated_at    TIMESTAMP NOT NULL
 );

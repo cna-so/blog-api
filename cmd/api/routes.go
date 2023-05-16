@@ -3,6 +3,7 @@ package main
 import (
 	ar "backend/controllers/article"
 	"backend/controllers/authorization"
+	"backend/controllers/category"
 	controllers "backend/controllers/user"
 	"net/http"
 
@@ -32,5 +33,8 @@ func Routes() *gin.Engine {
 	articles.POST("/create", authorization.RequireRole, ar.CreateArticle)
 	articles.GET("/find/:id", ar.GetArticleWithId)
 	articles.DELETE("/delete/:id", ar.DeleteArticle)
+
+	ctgry := router.Group("/api/v1/category")
+	ctgry.GET("/all", category.GetCategories)
 	return router
 }
