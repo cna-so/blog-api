@@ -4,6 +4,7 @@ import (
 	ar "backend/controllers/article"
 	"backend/controllers/authorization"
 	"backend/controllers/category"
+	"backend/controllers/fileUploader"
 	controllers "backend/controllers/user"
 	"net/http"
 
@@ -14,6 +15,7 @@ func Routes() *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
+	router.LoadHTMLFiles("./view/index.html", "./view/success.html")
 
 	router.GET("/ping", func(context *gin.Context) {
 		context.JSON(http.StatusOK, gin.H{
@@ -36,5 +38,11 @@ func Routes() *gin.Engine {
 
 	ctgry := router.Group("/api/v1/category")
 	ctgry.GET("/all", category.GetCategories)
+
+	file := router.Group("/api/v1/file")
+	file.POST("/upload", fileUploader.FileUploader)
+	file.GET("/test", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", nil)
+	})
 	return router
 }
