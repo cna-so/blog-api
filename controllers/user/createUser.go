@@ -3,6 +3,7 @@ package controllers
 import (
 	HashPassword "backend/helpers/hash"
 	"backend/models"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,6 +12,7 @@ import (
 func CreateUser(ctx *gin.Context) {
 	var user models.User
 	err := ctx.ShouldBindJSON(&user)
+	log.Println(err)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error":   "validation error",

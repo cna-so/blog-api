@@ -1,10 +1,11 @@
 package fileUploader
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/gofrs/uuid"
 	"net/http"
 	"os"
-	"time"
 )
 
 func FileUploader(ctx *gin.Context) {
@@ -19,13 +20,16 @@ func FileUploader(ctx *gin.Context) {
 			"message": err.Error(),
 		})
 	}
-	err = ctx.SaveUploadedFile(file, "public/img/"+time.Now().Format("2006-01-02")+file.Filename)
+	id, _ := uuid.DefaultGenerator.NewV4()
+	err = ctx.SaveUploadedFile(file, fmt.Sprintf("public/img/%s-%s", id, file.Filename))
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error":   "FILE CREATION",
 			"message": err.Error(),
 		})
 	}
-	ctx.HTML(201, "success.html", nil)
-	return
+	ctx.JSON(201,
+		gin.H{
+			"file": fmt.Sprintf("public/img/%s-%s", id, file.Filename),
+		})
 }

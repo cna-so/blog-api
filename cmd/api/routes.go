@@ -1,18 +1,20 @@
-package main
+package api
 
 import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+
 	ar "backend/controllers/article"
 	"backend/controllers/authorization"
 	"backend/controllers/category"
 	"backend/controllers/fileUploader"
 	controllers "backend/controllers/user"
-	"net/http"
-
-	"github.com/gin-gonic/gin"
 )
 
 func Routes() *gin.Engine {
 	router := gin.New()
+	router.Static("/files", "./public/img")
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 	router.LoadHTMLFiles("./view/index.html", "./view/success.html")

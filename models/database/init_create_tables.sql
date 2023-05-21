@@ -24,6 +24,7 @@ CREATE TABLE articles
     description   TEXT         NOT NULL,
     creator       INTEGER REFERENCES users (id),
     category_id   INTEGER REFERENCES categories (id),
+    photos        VARCHAR(300)[],
     created_at    TIMESTAMP NOT NULL ,
     updated_at    TIMESTAMP NOT NULL
 );

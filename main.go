@@ -1,8 +1,11 @@
 package main
 
 import (
-	"backend/initializer"
+	"backend/cmd/api"
+	"log"
 	"net/http"
+
+	"backend/initializer"
 )
 
 func init() {
@@ -14,10 +17,10 @@ const port = ":8080"
 func main() {
 	server := http.Server{
 		Addr:    port,
-		Handler: Routes(),
+		Handler: api.Routes(),
 	}
 	err := server.ListenAndServe()
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 }

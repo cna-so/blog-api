@@ -13,7 +13,7 @@ type User struct {
 	FirstName string `json:"first_name" binding:"required"`
 	LastName  string `json:"last_name,omitempty" binding:"required"`
 	Password  string `json:"password" binding:"required"`
-	Role      string `json:"role" binding:"required"`
+	Role      string `json:"role"`
 }
 type UserLogin struct {
 	ID        string `json:"id,omitempty"`

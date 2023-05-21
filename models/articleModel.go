@@ -3,6 +3,7 @@ package models
 import (
 	"backend/initializer"
 	"errors"
+	"github.com/lib/pq"
 	"time"
 )
 
@@ -11,6 +12,7 @@ type Article struct {
 	Title       string    `json:"title" binding:"required"`
 	Description string    `json:"description" binding:"required"`
 	CategoryID  int       `json:"category_id" binding:"required"`
+	ImageId     []string  `json:"image_id"`
 	Creator     int       `json:"creator" binding:"required"`
 	CreateAt    time.Time `json:"create_at,omitempty"`
 	UpdatedAt   time.Time `json:"updated_at,omitempty"`
@@ -18,7 +20,7 @@ type Article struct {
 
 // GetArticles TODO : enable pagination
 func (ar *Article) GetArticles() ([]Article, error) {
-	rows, err := initializer.Db.Query("SELECT id , title,description,creator,category_id , created_at FROM articles")
+	rows, err := initializer.Db.Query("SELECT id , title,description,photos,creator,category_id , created_at FROM articles")
 	if err != nil {
 		return nil, err
 	}
@@ -27,7 +29,7 @@ func (ar *Article) GetArticles() ([]Article, error) {
 
 	for rows.Next() {
 		var article Article
-		err = rows.Scan(&article.ID, &article.Title, &article.Description, &article.Creator, &article.CategoryID, &article.CreateAt)
+		err = rows.Scan(&article.ID, &article.Title, &article.Description, (*pq.StringArray)(&article.ImageId), &article.Creator, &article.CategoryID, &article.CreateAt)
 		if err != nil {
 			return nil, err
 		}
@@ -37,12 +39,12 @@ func (ar *Article) GetArticles() ([]Article, error) {
 }
 
 func (ar *Article) GetArticleWithId() (Article, error) {
-	row := initializer.Db.QueryRow("SELECT id, title, description, creator, category_id, created_at, updated_at FROM articles WHERE id=$1", ar.ID)
+	row := initializer.Db.QueryRow("SELECT id, title, description, photos, creator, category_id, created_at, updated_at FROM articles WHERE id=$1", ar.ID)
 	if row.Err() != nil {
 		return Article{}, row.Err()
 	}
 	var article Article
-	err := row.Scan(&article.ID, &article.Title, &article.Description, &article.Creator, &article.CategoryID, &article.CreateAt, &article.UpdatedAt)
+	err := row.Scan(&article.ID, &article.Title, &article.Description, (*pq.StringArray)(&article.ImageId), &article.Creator, &article.CategoryID, &article.CreateAt, &article.UpdatedAt)
 	if err != nil {
 		return Article{}, err
 	}
@@ -68,9 +70,9 @@ func (ar *Article) DeleteArticle() (string, error) {
 
 func (ar *Article) InsertArticle() (string, error) {
 	row := initializer.Db.QueryRow(`INSERT INTO articles 
-    (title, description, creator, category_id , created_at ,updated_at) 
-	VALUES ($1,$2,$3,$4,$5,$6) RETURNING id`,
-		ar.Title, ar.Description, ar.Creator, ar.CategoryID, time.Now(), time.Now(),
+    (title, description, creator,photos, category_id , created_at ,updated_at) 
+	VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id`,
+		ar.Title, ar.Description, ar.Creator, ar.ImageId, ar.CategoryID, time.Now(), time.Now(),
 	)
 	if row.Err() != nil {
 		return "", row.Err()
